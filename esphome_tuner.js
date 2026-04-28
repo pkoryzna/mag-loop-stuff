@@ -12,24 +12,28 @@ Plugins.esphome_tuner.stepper_pos_url = "/number/Stepper target position"
 Plugins.esphome_tuner.update_interval_ms = 1000;
 
 Plugins.esphome_tuner.update_motor_status = function (resp_data) {
-        let motorButton = $('#tuner-motor-on');
-        let onCss = {
-                color: "rgb(0,255,0)"
-            };
-        let offCss = {
-                color: "white"
-            };
-        motorButton.css(resp_data.value ? onCss : offCss);
+    let motorButton = $('#tuner-motor-on');
+    let onCss = {
+        color: "rgb(0,255,0)"
+    };
+    let offCss = {
+        color: "white"
+    };
+    motorButton.css(resp_data.value ? onCss : offCss);
 };
 
 Plugins.esphome_tuner.refresh_motor_status = function () {
-    $.ajax(`${Plugins.esphome_tuner.base_url}${Plugins.esphome_tuner.motor_switch}`, {success: 
-        this.update_motor_status
-    });
+    $.ajax(`${Plugins.esphome_tuner.base_url}${Plugins.esphome_tuner.motor_switch}`,
+        {
+            success: this.update_motor_status
+        });
 }
 
 Plugins.esphome_tuner.refresh_stepper_position = function () {
-    $.ajax(`${Plugins.esphome_tuner.base_url}${Plugins.esphome_tuner.stepper_pos_url}`, {success: (resp_data) => $("#tuner-stepper-pos").text(resp_data.state) });
+    $.ajax(`${Plugins.esphome_tuner.base_url}${Plugins.esphome_tuner.stepper_pos_url}`,
+        {
+            success: (resp_data) => $("#tuner-stepper-pos").text(resp_data.state)
+        });
 }
 
 Plugins.esphome_tuner.update_ui_state = () => {
@@ -67,8 +71,8 @@ Plugins.esphome_tuner.init = async function () {
     $('#tuner-home-stepper').on('click', function () {
         $.post(`${Plugins.esphome_tuner.base_url}${Plugins.esphome_tuner.home_stepper}/press`, () => Plugins.esphome_tuner.update_ui_state);
     });
-    
-    $("#tuner-stepper-pos").css({float: "right", "font-family": "roboto-mono, monospace", "display": "inline-block"});
+
+    $("#tuner-stepper-pos").css({ float: "right", "font-family": "roboto-mono, monospace", "display": "inline-block" });
 
     $(".tuner-preset").on('click', function () {
         let presetName = $(this).text()
@@ -77,6 +81,6 @@ Plugins.esphome_tuner.init = async function () {
 
     setInterval(this.update_ui_state, Plugins.esphome_tuner.update_interval_ms);
 
-  return true;
+    return true;
 };
 
